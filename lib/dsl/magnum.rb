@@ -357,6 +357,7 @@ module Ruleby
       GTE_PROC = lambda {|x,y| x and x >= y}
       TRUE_PROC = lambda {|x| true}
       NOT_PROC = lambda {|x,y| x != y}
+      BETWEEN_PROC = lambda {|x,y| x.between?(*y)}
 
       def initialize(method_id)
         @name = method_id
@@ -411,6 +412,10 @@ module Ruleby
         self
       end 
 
+      def between?(a, b)
+        create_block [a,b], BETWEEN_PROC
+      end
+
       def bind(tag)
         @tag = tag
         self
@@ -429,7 +434,7 @@ module Ruleby
       def <<(*tags)
         deref(*tags)
       end
-      
+
       def build_atoms(tags,methods,when_id)
         atoms = @child_atom_builders.map { |atom_builder|
           tags[atom_builder.tag] = when_id
