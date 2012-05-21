@@ -358,6 +358,7 @@ module Ruleby
       TRUE_PROC = lambda {|x| true}
       NOT_PROC = lambda {|x,y| x != y}
       BETWEEN_PROC = lambda {|x,y| x.between?(*y)}
+      IS_PROC = lambda {|x,y| x.kind_of?(y)}
 
       def initialize(method_id)
         @name = method_id
@@ -414,6 +415,10 @@ module Ruleby
 
       def between?(a, b)
         create_block [a,b], BETWEEN_PROC
+      end
+
+      def is?(value)
+        create_block value, IS_PROC
       end
 
       def bind(tag)
